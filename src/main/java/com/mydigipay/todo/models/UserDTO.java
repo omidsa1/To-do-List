@@ -3,17 +3,15 @@ package com.mydigipay.todo.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users")
-public class UserDocument {
+public class UserDTO {
 
-    @Id
     private String id;
     private String Name;
 
-    public UserDocument() {
+    public UserDTO() {
     }
 
-    public UserDocument(String id, String Name) {
+    public UserDTO(String id, String Name) {
         this.id = id;
         this.Name = Name;
     }
