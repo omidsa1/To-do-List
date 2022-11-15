@@ -1,0 +1,15 @@
+com\mydigipay\todo\services\UserService.class
+com\mydigipay\todo\mappers\TaskMapper.class
+com\mydigipay\todo\models\UserDocument.class
+com\mydigipay\todo\TodoApplication.class
+com\mydigipay\todo\repositories\UserRepository.class
+com\mydigipay\todo\mappers\TaskMapperImpl.class
+com\mydigipay\todo\mappers\UserMapper.class
+com\mydigipay\todo\models\TaskDocument.class
+com\mydigipay\todo\models\UserDto.class
+com\mydigipay\todo\controllers\TaskController.class
+com\mydigipay\todo\repositories\TaskRepository.class
+com\mydigipay\todo\controllers\UserController.class
+com\mydigipay\todo\models\TaskDto.class
+com\mydigipay\todo\mappers\UserMapperImpl.class
+com\mydigipay\todo\services\TaskService.class

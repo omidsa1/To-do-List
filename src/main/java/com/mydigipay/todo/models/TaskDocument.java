@@ -3,32 +3,34 @@ package com.mydigipay.todo.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "tasks")
 public class TaskDocument {
 
         @Id
         private String id;
-        private String Title;
-        private String Description;
-        private String Status;
+        private String title;
+        private String description;
+        private String status;
 
-        @DBRef(db="users")
-        private UserDocument Owner;
+        @DBRef
+        private UserDocument owner;
 
-        @DBRef(db="users")
-        private UserDocument Assignee;
+        @DBRef
+        private UserDocument assignee;
 
 
         public TaskDocument() {
         }
 
-        public TaskDocument(String id, String Title, String Description, String Status, UserDocument Owner, UserDocument Assignee) {
+        public TaskDocument(String id, String title, String description, String status, UserDocument owner, UserDocument assignee) {
             this.id = id;
-            this.Title = Title;
-            this.Description = Description;
-            this.Status = Status;
-            this.Owner = Owner;
-            this.Assignee = Assignee;
+            this.title = title;
+            this.description = description;
+            this.status = status;
+            this.owner = owner;
+            this.assignee = assignee;
         }
 
         public String getId() {
@@ -40,43 +42,43 @@ public class TaskDocument {
         }
 
         public String getTitle() {
-            return Title;
+            return title;
         }
 
-        public void setTitle(String Title) {
-            this.Title = Title;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public String getDescription() {
-            return Description;
+            return description;
         }
 
-        public void setDescription(String Description) {
-            this.Description = Description;
+        public void setDescription(String description) {
+            this.description = description;
         }
 
         public String getStatus() {
-            return Status;
+            return status;
         }
 
-        public void setStatus(String Status) {
-            this.Status = Status;
+        public void setStatus(String status) {
+            this.status = status;
         }
 
         public UserDocument getOwner() {
-            return Owner;
+            return owner;
         }
 
-        public void setOwner(UserDocument Owner) {
-            this.Owner = Owner;
+        public void setOwner(UserDocument owner) {
+            this.owner = owner;
         }
 
         public UserDocument getAssignee() {
-            return Assignee;
+            return assignee;
         }
 
-        public void setAssignee(UserDocument Assignee) {
-            this.Assignee = Assignee;
+        public void setAssignee(UserDocument assignee) {
+            this.assignee = assignee;
         }
 
 }
