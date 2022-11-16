@@ -1,22 +1,25 @@
 package com.mydigipay.todo.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
 public class UserDocument {
 
     @Id
     private String id;
-    private String name;
+    @Indexed(unique = true)
+    private String username;
     private String password;
 
     public UserDocument() {
     }
 
-    public UserDocument(String id, String name, String password) {
+    public UserDocument(String id, String username, String password) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.password = password;
     }
 
@@ -28,12 +31,12 @@ public class UserDocument {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

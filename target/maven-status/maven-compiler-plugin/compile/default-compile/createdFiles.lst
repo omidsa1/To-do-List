@@ -13,3 +13,5 @@ com\mydigipay\todo\controllers\UserController.class
 com\mydigipay\todo\models\TaskDto.class
 com\mydigipay\todo\mappers\UserMapperImpl.class
 com\mydigipay\todo\services\TaskService.class
+com\mydigipay\todo\services\TaskServiceImpl.class
+com\mydigipay\todo\services\UserServiceImpl.class
