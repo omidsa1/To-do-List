@@ -3,6 +3,7 @@ package com.mydigipay.todo.services;
 import com.mydigipay.todo.models.TaskDocument;
 import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.repositories.TaskRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +23,10 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(taskDocument);
     }
     @Override
-    public TaskDocument create(TaskDocument taskDocument, String userId) {
-        //todo user not found exception should be converted
-        UserDocument user = userService.findById(userId);
+    public TaskDocument create(TaskDocument taskDocument) {
+        String username =(String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserDocument user = userService.findByUsername(username);
         taskDocument.setOwner(user);
         return save(taskDocument);
     }
@@ -32,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDocument findById(String id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("tsk not found"));
+                .orElseThrow(() -> new RuntimeException("task not found"));
     }
 
     @Override

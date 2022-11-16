@@ -24,9 +24,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDto save(@RequestBody TaskDto task, @RequestParam String userId){
-        //todo userId param should be removed and gotten by security
-        TaskDocument taskDocument = taskService.create(taskMapper.dtoToDocument(task), userId);
+    public TaskDto save(@RequestBody TaskDto task) {
+        TaskDocument taskDocument = taskService.create(taskMapper.dtoToDocument(task));
         return taskMapper.documentToDto(taskDocument);
     }
 

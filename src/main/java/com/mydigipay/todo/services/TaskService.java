@@ -7,7 +7,7 @@ import java.util.List;
 public interface TaskService {
     TaskDocument save(TaskDocument taskDocument);
 
-    TaskDocument create(TaskDocument taskDocument, String userId);
+    TaskDocument create(TaskDocument taskDocument);
 
     TaskDocument findById(String id);
 
