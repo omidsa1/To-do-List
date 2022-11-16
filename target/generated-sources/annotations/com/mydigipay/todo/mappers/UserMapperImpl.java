@@ -2,30 +2,30 @@ package com.mydigipay.todo.mappers;
 
 import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.models.UserDto;
+import com.mydigipay.todo.models.UserResponseDto;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-16T18:32:22+0330",
+    date = "2022-11-17T02:07:35+0330",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.2 (Oracle Corporation)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public UserDto documentToDto(UserDocument userDocument) {
+    public UserResponseDto documentToDto(UserDocument userDocument) {
         if ( userDocument == null ) {
             return null;
         }
 
-        UserDto userDto = new UserDto();
+        UserResponseDto userResponseDto = new UserResponseDto();
 
-        userDto.setId( userDocument.getId() );
-        userDto.setUsername( userDocument.getUsername() );
-        userDto.setPassword( userDocument.getPassword() );
+        userResponseDto.setId( userDocument.getId() );
+        userResponseDto.setUsername( userDocument.getUsername() );
 
-        return userDto;
+        return userResponseDto;
     }
 
     @Override

@@ -14,6 +14,7 @@ public class UserDocument {
     private String username;
     private String password;
 
+
     public UserDocument() {
     }
 

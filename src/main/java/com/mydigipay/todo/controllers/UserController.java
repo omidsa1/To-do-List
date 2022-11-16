@@ -3,8 +3,10 @@ package com.mydigipay.todo.controllers;
 import com.mydigipay.todo.mappers.UserMapper;
 import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.models.UserDto;
+import com.mydigipay.todo.models.UserResponseDto;
 import com.mydigipay.todo.services.UserService;
 import com.mydigipay.todo.services.UserServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,13 +26,16 @@ public class UserController {
     }
 
     @PostMapping
-    UserDto signUp(@RequestBody UserDto user) {
-        UserDocument userDocument = userService.save(userMapper.dtoToDocument(user));
-        return userMapper.documentToDto(userDocument);
+    UserResponseDto signUp(@RequestBody UserDto user) {
+
+            UserDocument userDocument = userService.save(userMapper.dtoToDocument(user));
+            return userMapper.documentToDto(userDocument);
+
+
     }
 
     @PutMapping
-    UserDto update(@RequestBody UserDto user) {
+    UserResponseDto update(@RequestBody UserDto user) {
         UserDocument userDocument = userService.save(userMapper.dtoToDocument(user));
         return userMapper.documentToDto(userDocument);
     }
@@ -46,17 +51,17 @@ public class UserController {
     }
 
     @GetMapping("/id/{id}")
-    UserDto findById(@PathVariable String id) {
+    UserResponseDto findById(@PathVariable String id) {
         return userMapper.documentToDto(userService.findById(id));
     }
 
     @GetMapping("/username/{username}")
-    UserDto findByUsername(@PathVariable String username) {
+    UserResponseDto findByUsername(@PathVariable String username) {
         return userMapper.documentToDto(userService.findByUsername(username));
     }
 
     @GetMapping
-    List<UserDto> findAll() {
+    List<UserResponseDto> findAll() {
         return userService.find()
                 .stream()
                 .map(document -> userMapper.documentToDto(document))
