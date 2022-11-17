@@ -1,37 +1,56 @@
 package com.mydigipay.todo.controllers;
 
 
-import com.mydigipay.todo.models.TaskDTO;
+import com.mydigipay.todo.mappers.TaskMapper;
+import com.mydigipay.todo.models.TaskDocument;
+import com.mydigipay.todo.models.TaskDto;
 import com.mydigipay.todo.services.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RestController("/task")
+@RestController
+@RequestMapping("/task")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
 
-    @GetMapping
-    List<TaskDTO> listTasks(@RequestParam String type) {
-        return taskService.getTasks(type);
+    private final TaskService taskService;
+    private final TaskMapper taskMapper;
 
+    public TaskController(TaskService taskService, TaskMapper taskMapper) {
+        this.taskService = taskService;
+        this.taskMapper = taskMapper;
+    }
+
+    @PostMapping
+    public TaskDto save(@RequestBody TaskDto task) {
+        TaskDocument taskDocument = taskService.create(taskMapper.dtoToDocument(task));
+        return taskMapper.documentToDto(taskDocument);
     }
 
     @PutMapping
-    TaskDTO updateTask(@RequestBody TaskDTO task) {
-        return taskService.updateTask(task);
+    TaskDto updateTask(@RequestBody TaskDto task) {
+        TaskDocument taskDocument = taskService.save(taskMapper.dtoToDocument(task));
+        return taskMapper.documentToDto(taskDocument);
+    }
+
+    @GetMapping
+    List<TaskDto> findTasks(@RequestParam String type,@RequestParam String userId) {
+        //todo userId param should be removed and gotten by security
+        return taskService.getUsersTasks(type,userId)
+                .stream()
+                .map(document->taskMapper.documentToDto(document))
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/assign")
-    TaskDTO assignTask(@RequestParam Integer taskId, @RequestParam Integer assigneeId) {
-        return taskService.assignTask(taskId, assigneeId);
+    TaskDto assignTask(@RequestParam String taskId, @RequestParam String assigneeId) {
+        return taskMapper.documentToDto(taskService.assignTask(taskId, assigneeId));
     }
 
-    @DeleteMapping
-    void deleteTask(@RequestParam Integer taskId) {
+    @DeleteMapping("/{taskId}")
+    void deleteTask(@PathVariable String taskId) {
         taskService.deleteTask(taskId);
     }
 

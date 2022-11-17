@@ -1,24 +1,23 @@
 package com.mydigipay.todo.services;
 
-import org.springframework.stereotype.Service;
+import com.mydigipay.todo.models.UserDocument;
 
-@Service
-public class UserService {
-    public void signUp(String username, String password) {
-    }
+import java.util.List;
 
-    public void signIn(String username, String password) {
-    }
+public interface UserService {
+    void signIn(UserDocument userDocument);
 
-    public void changePassword(String username, String newPassword) {
-    }
+    void changePassword(String username, String newPassword);//Don't need,update is enough;
 
-    public void deleteUser(String username) {
-    }
+    UserDocument save(UserDocument userDocument);
 
-    public void listOwnedTasks(String username) {
-    }
+    List<UserDocument> find();
 
-    public void listAssignedTasks(String username) {
-    }
+    UserDocument findById(String id);
+
+    UserDocument findByUsername(String username);
+
+    void delete(UserDocument userDocument);
+
+    void deleteById(String id);
 }

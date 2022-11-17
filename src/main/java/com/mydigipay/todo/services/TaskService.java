@@ -1,25 +1,21 @@
 package com.mydigipay.todo.services;
 
-import com.mydigipay.todo.models.TaskDTO;
-import org.springframework.stereotype.Service;
+import com.mydigipay.todo.models.TaskDocument;
 
 import java.util.List;
 
-@Service
-public class TaskService {
+public interface TaskService {
+    TaskDocument save(TaskDocument taskDocument);
 
-    public List<TaskDTO> getTasks(String type) {
-        return null;
-    }
+    TaskDocument create(TaskDocument taskDocument);
 
-    public TaskDTO updateTask(TaskDTO task) {
-        return task;
-    }
+    TaskDocument findById(String id);
 
-    public TaskDTO assignTask(Integer taskId, Integer assigneeId) {
-        return null;
-    }
+    List<TaskDocument> getUsersTasks(String type, String userId);
 
-    public void deleteTask(Integer taskId) {
-    }
+    TaskDocument assignTask(String taskId, String assigneeId);
+
+    TaskDocument unAssignTask(String taskId);
+
+    void deleteTask(String id);
 }
