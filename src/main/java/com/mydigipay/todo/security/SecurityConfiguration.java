@@ -3,6 +3,7 @@ package com.mydigipay.todo.security;
 import com.mydigipay.todo.security.filters.CustomAuthenticationFilter;
 import com.mydigipay.todo.security.filters.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,6 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests().antMatchers("/task/**").hasAuthority("ROLE_USER");
 //        http.authorizeRequests().antMatchers("/user/**").hasAuthority("ROLE_USER");
+
+
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/user").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

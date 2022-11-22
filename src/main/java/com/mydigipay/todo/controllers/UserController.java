@@ -5,8 +5,6 @@ import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.models.UserDto;
 import com.mydigipay.todo.models.UserResponseDto;
 import com.mydigipay.todo.services.UserService;
-import com.mydigipay.todo.services.UserServiceImpl;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

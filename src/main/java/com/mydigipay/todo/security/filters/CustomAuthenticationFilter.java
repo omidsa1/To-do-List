@@ -31,27 +31,28 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-//        try {
-//            UserDocument userDocument = new ObjectMapper().readValue(request.getInputStream(), UserDocument.class);
-//            String username = userDocument.getUsername();
-//            String password = userDocument.getPassword();
-//            UsernamePasswordAuthenticationToken authenticationToken =
-//                    new UsernamePasswordAuthenticationToken(username,password);
-//            return authenticationManager.authenticate(authenticationToken);
-//        } catch (IOException e) {
-//            UsernamePasswordAuthenticationToken authenticationToken =
-//                    new UsernamePasswordAuthenticationToken("username","password");
-//            return authenticationManager.authenticate(authenticationToken);
-//           //throw new RuntimeException("exception in login request");
-//        }
-
-
-
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+        try {
+            UserDocument userDocument = new ObjectMapper().readValue(request.getInputStream(), UserDocument.class);
+            String username = userDocument.getUsername();
+            String password = userDocument.getPassword();
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(username,password);
             return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken("username","password");
+//            return authenticationManager.authenticate(authenticationToken);
+
+           throw new RuntimeException("exception in login request");
+        }
+
+
+
+//            String username = request.getParameter("username");
+//            String password = request.getParameter("password");
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(username,password);
+//            return authenticationManager.authenticate(authenticationToken);
 
     }
 

@@ -22,13 +22,30 @@ public class TaskServiceImpl implements TaskService {
     public TaskDocument save(TaskDocument taskDocument) {
         return taskRepository.save(taskDocument);
     }
+
+
+    @Override
+    public TaskDocument update(TaskDocument taskDocument) {
+        String username = getUsername();
+        TaskDocument task = findById(taskDocument.getId());
+        taskDocument.setOwner(task.getOwner());
+        taskDocument.setAssignee(task.getAssignee());
+        if(task.getAssignee() != null && task.getAssignee().getUsername().equals(username))
+            return taskRepository.save(taskDocument);
+        else if(task.getOwner() != null && task.getOwner().getUsername().equals(username))
+            return taskRepository.save(taskDocument);
+        else throw new RuntimeException("just owner or assignee can update the task");
+    }
     @Override
     public TaskDocument create(TaskDocument taskDocument) {
-        String username =(String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        String username = getUsername();
         UserDocument user = userService.findByUsername(username);
         taskDocument.setOwner(user);
         return save(taskDocument);
+    }
+
+    private String getUsername() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
@@ -38,38 +55,51 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDocument> getUsersTasks(String type, String userId) {
-        //todo user not found exception should be converted
-        UserDocument user = userService.findById(userId);
+    public List<TaskDocument> getUsersTasks(String type) {
+
+        String username = getUsername();
+        UserDocument user = userService.findByUsername(username);
         if(type.equalsIgnoreCase("assigned"))
             return taskRepository.findByAssignee(user);
         else if(type.equalsIgnoreCase("created"))
             return taskRepository.findByOwner(user);
         else
-        return null;
+            throw new RuntimeException("type parameter should be assigned or created");
     }
 
 
     @Override
     public TaskDocument assignTask(String taskId, String assigneeId) {
-        //todo user not found exception should be converted
-        //todo task not found exception should be converted
+
         TaskDocument task = findById(taskId);
-        UserDocument user = userService.findById(assigneeId);
-        task.setAssignee(user);
-        return save(task);
+        if(task.getOwner() != null && task.getOwner().getUsername().equals(getUsername())){
+            UserDocument assignee = userService.findById(assigneeId);
+            task.setAssignee(assignee);
+            return save(task);
+        }
+        else
+            throw new RuntimeException("only owner of task can assign the task");
 
     }
     @Override
     public TaskDocument unAssignTask(String taskId) {
-        //todo task not found exception should be converted
         TaskDocument task = findById(taskId);
-        task.setAssignee(null);
-        return save(task);
+        if(task.getOwner() != null && task.getOwner().getUsername().equals(getUsername())){
+            task.setAssignee(null);
+            return save(task);
+        }
+        else
+            throw new RuntimeException("only owner of task can remove assignment");
     }
 
     @Override
     public void deleteTask(String id) {
-        taskRepository.deleteById(id);
+        TaskDocument task = findById(id);
+        if(task.getOwner() != null && task.getOwner().getUsername().equals(getUsername()))
+            taskRepository.deleteById(id);
+        else
+            throw new RuntimeException("only owner of task can delete the task");
+
+
     }
 }

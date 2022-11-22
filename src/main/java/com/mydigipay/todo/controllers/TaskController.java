@@ -4,7 +4,9 @@ package com.mydigipay.todo.controllers;
 import com.mydigipay.todo.mappers.TaskMapper;
 import com.mydigipay.todo.models.TaskDocument;
 import com.mydigipay.todo.models.TaskDto;
+import com.mydigipay.todo.models.TaskResponseDto;
 import com.mydigipay.todo.services.TaskService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,29 +26,34 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDto save(@RequestBody TaskDto task) {
+    public TaskResponseDto save(@RequestBody TaskDto task) {
         TaskDocument taskDocument = taskService.create(taskMapper.dtoToDocument(task));
         return taskMapper.documentToDto(taskDocument);
     }
 
     @PutMapping
-    TaskDto updateTask(@RequestBody TaskDto task) {
-        TaskDocument taskDocument = taskService.save(taskMapper.dtoToDocument(task));
+    TaskResponseDto updateTask(@RequestBody TaskDto task) {
+        TaskDocument taskDocument = taskService.update(taskMapper.dtoToDocument(task));
         return taskMapper.documentToDto(taskDocument);
     }
 
     @GetMapping
-    List<TaskDto> findTasks(@RequestParam String type,@RequestParam String userId) {
-        //todo userId param should be removed and gotten by security
-        return taskService.getUsersTasks(type,userId)
+    List<TaskResponseDto> findTasks(@RequestParam String type) {
+
+        return taskService.getUsersTasks(type)
                 .stream()
                 .map(document->taskMapper.documentToDto(document))
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/assign")
-    TaskDto assignTask(@RequestParam String taskId, @RequestParam String assigneeId) {
+    TaskResponseDto assignTask(@RequestParam String taskId, @RequestParam String assigneeId) {
         return taskMapper.documentToDto(taskService.assignTask(taskId, assigneeId));
+    }
+
+    @PostMapping("/unAssign")
+    TaskResponseDto assignTask(@RequestParam String taskId) {
+        return taskMapper.documentToDto(taskService.unAssignTask(taskId));
     }
 
     @DeleteMapping("/{taskId}")
