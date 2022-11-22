@@ -47,4 +47,29 @@ public class UserDocument {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public static class Builder {
+        private String id;
+        private String username;
+        private String password;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserDocument build() {
+            return new UserDocument(id, username, password);
+        }
+    }
 }
