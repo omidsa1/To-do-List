@@ -5,6 +5,7 @@ import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.models.UserDto;
 import com.mydigipay.todo.models.UserResponseDto;
 import com.mydigipay.todo.services.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,13 +35,8 @@ public class UserController {
 
     @PutMapping
     UserResponseDto update(@RequestBody UserDto user) {
-        UserDocument userDocument = userService.save(userMapper.dtoToDocument(user));
+        UserDocument userDocument = userService.update(userMapper.dtoToDocument(user));
         return userMapper.documentToDto(userDocument);
-    }
-
-    @DeleteMapping
-    void delete(@RequestBody UserDto user) {
-        userService.delete(userMapper.dtoToDocument(user));
     }
 
     @DeleteMapping("/{id}")
@@ -71,8 +67,4 @@ public class UserController {
         userService.signIn(userDocument);
     }
 
-    @PutMapping("/change-password") //dont need to this update method will do it
-    void changePassword(@RequestParam String username, @RequestParam String newPassword) {
-        userService.changePassword(username, newPassword);
-    }
 }

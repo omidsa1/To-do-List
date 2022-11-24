@@ -25,6 +25,15 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
+    public TaskDocument create(TaskDocument taskDocument) {
+        String username = getUsername();
+        UserDocument user = userService.findByUsername(username);
+        taskDocument.setOwner(user);
+        return save(taskDocument);
+    }
+
+
+    @Override
     public TaskDocument update(TaskDocument taskDocument) {
         String username = getUsername();
         TaskDocument task = findById(taskDocument.getId());
@@ -35,13 +44,6 @@ public class TaskServiceImpl implements TaskService {
         else if(task.getOwner() != null && task.getOwner().getUsername().equals(username))
             return taskRepository.save(taskDocument);
         else throw new RuntimeException("just owner or assignee can update the task");
-    }
-    @Override
-    public TaskDocument create(TaskDocument taskDocument) {
-        String username = getUsername();
-        UserDocument user = userService.findByUsername(username);
-        taskDocument.setOwner(user);
-        return save(taskDocument);
     }
 
     private String getUsername() {

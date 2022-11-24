@@ -7,8 +7,6 @@ import java.util.List;
 public interface UserService {
     void signIn(UserDocument userDocument);
 
-    void changePassword(String username, String newPassword);//Don't need,update is enough;
-
     UserDocument save(UserDocument userDocument);
 
     List<UserDocument> find();
@@ -17,7 +15,7 @@ public interface UserService {
 
     UserDocument findByUsername(String username);
 
-    void delete(UserDocument userDocument);
-
     void deleteById(String id);
+
+    UserDocument update(UserDocument userDocument);
 }

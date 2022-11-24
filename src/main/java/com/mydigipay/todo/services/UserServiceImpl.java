@@ -4,6 +4,7 @@ import com.mydigipay.todo.models.UserDocument;
 import com.mydigipay.todo.repositories.UserRepository;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,20 +33,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void changePassword(String username, String newPassword) {
-    }//Don't need,update is enough
-
-
-    @Override
     public UserDocument save(UserDocument userDocument) {
 
+        if(userDocument.getPassword() == null || userDocument.getPassword().isBlank())
+            throw new RuntimeException("password cannot be null or empty");
         try {
             //todo handle duplicate key exception for creating duplicate username
-            userDocument.setPassword(passwordEncoder.encode(userDocument.getPassword()));
+            userDocument.setPassword(passwordEncoder.encode(userDocument.getPassword().trim()));
             return userRepository.save(userDocument);
         } catch (DuplicateKeyException ex) {
             throw new RuntimeException("user name is not unique");
         }
+    }
+
+    @Override
+    public UserDocument update(UserDocument userDocument) {
+        if ((userDocument.getId() == null ))
+            throw new RuntimeException("userid cannot be null in update");
+
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDocument user = findByUsername(username);
+        if (user.getId().equals(userDocument.getId())){
+          return   save(userDocument);
+        }
+        else throw new RuntimeException("only user can update username or password");
     }
 
     @Override
@@ -63,10 +74,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("user not found"));
     }
 
-    @Override
-    public void delete(UserDocument userDocument) {
-        userRepository.delete(userDocument);
-    }
 
     @Override
     public void deleteById(String id) {

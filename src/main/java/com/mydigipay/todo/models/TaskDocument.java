@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document(collection = "tasks")
 public class TaskDocument {
 
@@ -80,5 +82,18 @@ public class TaskDocument {
         public void setAssignee(UserDocument assignee) {
             this.assignee = assignee;
         }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskDocument that = (TaskDocument) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(assignee, that.assignee);
+    }
 
 }

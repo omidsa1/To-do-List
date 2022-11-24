@@ -8,7 +8,7 @@ class TodoApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println("sth");
+
 	}
 
 }
