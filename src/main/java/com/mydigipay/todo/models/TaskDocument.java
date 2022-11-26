@@ -95,5 +95,49 @@ public class TaskDocument {
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(assignee, that.assignee);
     }
+        
+    public static class Builder {
+            private String id;
+            private String title;
+            private String description;
+            private String status;
+            private UserDocument owner;
+            private UserDocument assignee;
+
+            public Builder id(String id) {
+                this.id = id;
+                return this;
+            }
+
+            public Builder title(String title) {
+                this.title = title;
+                return this;
+            }
+
+            public Builder description(String description) {
+                this.description = description;
+                return this;
+            }
+
+            public Builder status(String status) {
+                this.status = status;
+                return this;
+            }
+
+            public Builder owner(UserDocument owner) {
+                this.owner = owner;
+                return this;
+            }
+
+            public Builder assignee(UserDocument assignee) {
+                this.assignee = assignee;
+                return this;
+            }
+
+            public TaskDocument build() {
+                return new TaskDocument(id, title, description, status, owner, assignee);
+            }
+
+    }
 
 }
